@@ -417,7 +417,7 @@ function slt_cf_display_box( $object, $custom_data, $request_type = 'post' ) {
 				echo $before_label . '<label for="' . $field_name .'" class="' . implode( ' ', $label_classes ) . '">' . $field['label'] . '</label>' . $after_label;
 				// Input
 				echo $before_input;
-				slt_cf_file_select_button( $field_name, $field_value, $field['file_button_label'], $field['preview_size'], $field['file_removeable'], $field['file_attach_to_post'] );
+				slt_cf_file_select_button( $field_name, $field_value, $field['file_button_label'], $field['preview_size'], $field['file_removeable'], $field['file_attach_to_post'], $field['file_allow_multiple'] );
 				echo $field_description;
 				echo $after_input;
 				break;

@@ -20,6 +20,7 @@ jQuery( document ).ready( function( $ ) {
 		// Store the button and other fields
 		var button = $( this );
 		var file_id_field = button.siblings( '.slt-cf-fs-value' );
+		var allow_multiple_field = button.siblings('.slt-cf-allow-multiple');
 		var field_name = button.attr( 'id' ).split( '_' ).slice( 0, -1 ).join( '_' );
 
 		// Get any parameters passed through
@@ -34,6 +35,9 @@ jQuery( document ).ready( function( $ ) {
 		}
 		if ( typeof slt_cf_media[ 'restrict_to_type__' + field_name ] != 'undefined' ) {
 			restrict_to_type = slt_cf_media[ 'restrict_to_type__' + field_name ];
+		}
+		if ( typeof slt_cf_media[ 'allow_multiple__' + field_name ] != 'undefined' ) {
+			allow_multiple = slt_cf_media[ 'allow_multiple__' + field_name ];
 		}
 
 		// If the frame already exists, re-open it.
@@ -94,7 +98,7 @@ jQuery( document ).ready( function( $ ) {
 			 * true or false. It defaults to true, but we only want the user to
 			 * upload one file, so let's set it to false.
 			 */
-			multiple: false,
+			multiple: allow_multiple,
 
 			/**
 			 * We can set a custom title for our media workflow. I've localized
@@ -162,23 +166,40 @@ jQuery( document ).ready( function( $ ) {
 		 * media_attachment object will hold a key titled 'url' that we want to use.
 		 */
 		slt_cf_media_frames[ field_name ].on( 'select', function() {
-			var preview_div, preview_size;
+			var preview_div, preview_size, i;
 
 			// Grab our attachment selection and construct a JSON representation of the model.
-			var media_attachment = slt_cf_media_frames[ field_name ].state().get( 'selection' ).first().toJSON();
+			var media_attachments = [];
+			var media_attachment_ids = [];
 
-			// Send the attachment ID to our custom input field via jQuery.
-			file_id_field.val( media_attachment.id );
+			var media_frames = slt_cf_media_frames[ field_name ].state().get( 'selection' );
+
+			for ( i = 0; i < media_frames.length; i++) {
+				// Send the attachment ID to our custom input field via jQuery.
+				media_attachment_ids.push(media_frames.models[i].toJSON().id );
+			}
+
+			file_id_field.val( media_attachment_ids.join(','));
 
 			// Deal with the preview
 			preview_div = $( '#' + field_name + '_preview' );
 			preview_size = $( '#' + field_name + '_preview-size' ).val();
 			// Load preview image
-			preview_div.html( '' ).load( slt_cf_media.ajaxurl, {
-				id: 	media_attachment.id,
-				size:	preview_size,
-				action:	'slt_cf_fs_get_file'
-			});
+			preview_div.html( '' );
+			for ( i = 0; i < media_frames.length; i++ ) {
+				$.ajax({
+					type: 'POST',
+					url: slt_cf_media.ajaxurl,
+					data: {
+						id: 	media_attachment_ids[i],
+						size:	preview_size,
+						action:	'slt_cf_fs_get_file'
+					},
+					success: function ( response ) {
+						preview_div.append(response);
+					}
+				});
+			}
 
 		});
 

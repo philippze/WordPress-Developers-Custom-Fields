@@ -904,7 +904,7 @@ if ( SLT_CF_USE_FILE_SELECT ) :
  * @param bool		$attach_to_post	When uploaded, should the file be attached to the current post (if this button is on a post edit screen)?
  * @return void
  */
-function slt_cf_file_select_button( $name, $value = 0, $label = 'Select file', $preview_size = 'thumbnail', $removable = true, $attach_to_post = true ) { ?>
+function slt_cf_file_select_button( $name, $value = 0, $label = 'Select file', $preview_size = 'thumbnail', $removable = true, $attach_to_post = true, $allow_multiple = true ) { ?>
 	<div>
 		<input type="button" id="<?php echo esc_attr( $name ); ?>_button" class="button-secondary slt-cf-fs-button" value="<?php echo esc_attr( $label ); ?>" />
 		<?php if ( $value && $removable ) { ?>
@@ -913,15 +913,19 @@ function slt_cf_file_select_button( $name, $value = 0, $label = 'Select file', $
 		<input type="hidden" value="<?php echo $attach_to_post ? '1' : '0'; ?>" name="<?php echo esc_attr( $name ); ?>_attach_to_post" id="<?php echo esc_attr( $name ); ?>_attach_to_post" class="slt-cf-fs-attach-to-post" />
 		<input type="hidden" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" class="slt-cf-fs-value" />
 		<input type="hidden" value="<?php echo esc_attr( $preview_size ); ?>" name="<?php echo esc_attr( $name ); ?>_preview-size" id="<?php echo esc_attr( $name ); ?>_preview-size" class="slt-fs-preview-size" />
+		<input type="hidden" value="<?php echo esc_attr( $$allow_multiple ); ?>" name="<?php echo esc_attr( $name ); ?>_allow-multiple" id="<?php echo esc_attr( $name ); ?>_allow-multiple" class="slt-fs-allow-multiple" />
 	</div>
 	<div class="slt-fs-preview" id="<?php echo esc_attr( $name ); ?>_preview" style="margin-top:7px"><?php
 		if ( $value ) {
-			if ( wp_attachment_is_image( $value ) ) {
-				// Show image preview
-				echo wp_get_attachment_image( $value, $preview_size );
-			} else {
-				// File link
-				echo slt_cf_file_select_link( $value );
+			$values = explode( ',', $value );
+			foreach ( $values as $single_value ) {
+				if ( wp_attachment_is_image( $single_value ) ) {
+					// Show image preview
+					echo wp_get_attachment_image( $single_value, $preview_size );
+				} else {
+					// File link
+					echo slt_cf_file_select_link( $single_value );
+				}
 			}
 		}
 	?></div>
