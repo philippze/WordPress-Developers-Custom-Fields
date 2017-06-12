@@ -1,0 +1,15 @@
+{
+    "name": "philippze/developers-custom-fields",
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Steve Taylor",
+            "homepage": "http://sltaylor.co.uk/",
+            "role": "Developer"
+        },
+    ],
+    "license": "LGPL-2"
+}
