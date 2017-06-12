@@ -913,7 +913,7 @@ function slt_cf_file_select_button( $name, $value = 0, $label = 'Select file', $
 		<input type="hidden" value="<?php echo $attach_to_post ? '1' : '0'; ?>" name="<?php echo esc_attr( $name ); ?>_attach_to_post" id="<?php echo esc_attr( $name ); ?>_attach_to_post" class="slt-cf-fs-attach-to-post" />
 		<input type="hidden" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" class="slt-cf-fs-value" />
 		<input type="hidden" value="<?php echo esc_attr( $preview_size ); ?>" name="<?php echo esc_attr( $name ); ?>_preview-size" id="<?php echo esc_attr( $name ); ?>_preview-size" class="slt-fs-preview-size" />
-		<input type="hidden" value="<?php echo esc_attr( $$allow_multiple ); ?>" name="<?php echo esc_attr( $name ); ?>_allow-multiple" id="<?php echo esc_attr( $name ); ?>_allow-multiple" class="slt-fs-allow-multiple" />
+		<input type="hidden" value="<?php echo esc_attr( $allow_multiple ); ?>" name="<?php echo esc_attr( $name ); ?>_allow-multiple" id="<?php echo esc_attr( $name ); ?>_allow-multiple" class="slt-fs-allow-multiple" />
 	</div>
 	<div class="slt-fs-preview" id="<?php echo esc_attr( $name ); ?>_preview" style="margin-top:7px"><?php
 		if ( $value ) {
